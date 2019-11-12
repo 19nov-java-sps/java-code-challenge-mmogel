@@ -1,7 +1,6 @@
 package com.revature.eval;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EvaluationService {
 
@@ -14,7 +13,12 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		if (string == null)	return null;
+		String reversestr = "";
+		for (int i=string.length()-1; i>=0; i--) {
+			reversestr += string.charAt(i);
+		}
+		return reversestr;
 	}
 
 	
@@ -28,7 +32,14 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		if (phrase == null) return null;
+		String[] phrasesplit = phrase.split("\\W+\\s*");
+		String acronym = "";
+		for (String word:phrasesplit) {
+			word = word.toUpperCase();
+			acronym += word.charAt(0);
+		}
+		return acronym;
 	}
 	
 	
@@ -47,9 +58,35 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public int getScrabbleScore(String string) {
+	public int getScrabbleScore(String string) throws RuntimeException {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int score = 0;
+		if (string == null) return 0;
+		
+		Map<Character, Integer> map = new HashMap<>();
+		char[] ones = {'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'};
+		for (char letter : ones) {
+			map.put(letter, 1);
+		}
+		map.put('D', 2); map.put('G', 2);
+		char[] threes = {'B', 'C', 'M', 'P'};
+		for (char letter : threes) {
+			map.put(letter, 3);
+		}
+		char[] fours = {'F', 'H', 'V', 'W', 'Y'};
+		for (char letter : fours) {
+			map.put(letter, 4);
+		}
+		map.put('K', 5); map.put('J', 8); map.put('X', 8);
+		map.put('Q', 10); map.put('Z', 10);
+		
+		string = string.toUpperCase();
+		for (int i = 0; i<string.length(); i++) {
+		    char letter = string.charAt(i);
+		    if (!map.containsKey(letter)) throw new RuntimeException("Not in Map!"); 
+			score += (int)map.get(letter);
+		}
+		return score;
 	}
 	
 	
@@ -61,10 +98,23 @@ public class EvaluationService {
 	 * 
 	 * @param string
 	 * @return 
+	 * 
+	 * Linked Hash Map?
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		Map<String, Integer> LHM = new LinkedHashMap<>();
+		String[] splitstring = string.split("\\W+\\s*");
+		
+		for (String word : splitstring) {
+			if (!LHM.containsKey(word)) LHM.put(word, 1);
+			else {
+				int count = LHM.get(word);
+				LHM.put(word, count+1);
+			}
+		}
+		
+		return LHM;
 	}
 	
 	/**
